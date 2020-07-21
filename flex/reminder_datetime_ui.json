@@ -1,0 +1,51 @@
+{
+  "type": "bubble",
+  "size": "kilo",
+  "header": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "Reminder",
+        "color": "#FFFFFF",
+        "align": "start",
+        "size": "lg"
+      }
+    ],
+    "backgroundColor": "#FF7744"
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "請設定提醒時間",
+        "size": "md"
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "action": {
+          "type": "datetimepicker",
+          "label": "設定時間",
+          "data": "reminder_datetime_postback",
+          "mode": "datetime"
+        },
+        "style": "primary",
+        "position": "relative",
+        "gravity": "center",
+        "height": "sm"
+      }
+    ],
+    "position": "relative",
+    "paddingStart": "30px",
+    "paddingEnd": "30px"
+  }
+}

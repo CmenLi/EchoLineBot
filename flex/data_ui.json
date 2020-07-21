@@ -1,0 +1,131 @@
+{
+  "type": "carousel",
+  "contents": [
+    {
+      "type": "bubble",
+      "header": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "HackMD",
+            "color": "#FFFFFF",
+            "size": "xl"
+          }
+        ],
+        "backgroundColor": "#3c3c3c"
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "紀錄所有關於線上課程以及比賽的資訊",
+            "wrap": true
+          }
+        ]
+      },
+      "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "button",
+            "action": {
+              "type": "uri",
+              "label": "GO",
+              "uri": "https://hackmd.io/@KoiSharp/H1l7A7kRI"
+            },
+            "style": "primary"
+          }
+        ]
+      }
+    },
+    {
+      "type": "bubble",
+      "header": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "Google Drive",
+            "color": "#FFFFFF",
+            "size": "xl"
+          }
+        ],
+        "backgroundColor": "#20AA20"
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "儲存線上課程影音教材以及比賽說明文件",
+            "wrap": true
+          }
+        ]
+      },
+      "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "button",
+            "action": {
+              "type": "uri",
+              "label": "GO",
+              "uri": "https://drive.google.com/drive/folders/13YSMSTgxpUFwUzXafZbvlbZk89yJPvNF?usp=sharing"
+            },
+            "style": "primary"
+          }
+        ]
+      }
+    },
+    {
+      "type": "bubble",
+      "header": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "Website",
+            "color": "#FFFFFF",
+            "size": "xl"
+          }
+        ],
+        "backgroundColor": "#A20055"
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "練習用網站",
+            "wrap": true
+          }
+        ]
+      },
+      "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "button",
+            "action": {
+              "type": "uri",
+              "label": "GO",
+              "uri": "https://pykachu-website.herokuapp.com/resources.jsp"
+            },
+            "style": "primary"
+          }
+        ]
+      }
+    }
+  ]
+}

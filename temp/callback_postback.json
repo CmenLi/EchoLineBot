@@ -1,0 +1,18 @@
+{
+	"events": [
+		{
+			"type": "postback",
+			"replyToken": "19eae069758e413eac402c0c6b6ab80c",
+			"source": {
+				"userId": "U940d15d3a94c5e90dde5e52dd373d0be",
+				"type": "user"
+			},
+			"timestamp": 1594736454466,
+			"mode": "active",
+			"postback": {
+				"data": "reminder_confirm_ok"
+			}
+		}
+	],
+	"destination": "U43cd46232c15d156321ae42c260a36cf"
+}

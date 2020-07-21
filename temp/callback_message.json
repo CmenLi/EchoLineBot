@@ -1,0 +1,20 @@
+{
+	"events": [
+		{
+			"type": "message",
+			"replyToken": "f308b436a94244c3b43e2739cf0dbe9f",
+			"source": {
+				"userId": "U940d15d3a94c5e90dde5e52dd373d0be",
+				"type": "user"
+			},
+			"timestamp": 1594737572222,
+			"mode": "active",
+			"message": {
+				"type": "text",
+				"id": "12318515035715",
+				"text": ";;remind"
+			}
+		}
+	],
+	"destination": "U43cd46232c15d156321ae42c260a36cf"
+}

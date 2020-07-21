@@ -1,0 +1,133 @@
+{
+  "type": "bubble",
+  "size": "kilo",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "你所設定的提醒內容如下"
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "提醒時間:"
+                  }
+                ],
+                "width": "90px"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "2020/7/13(一) 00:00:00",
+                    "wrap": true
+                  }
+                ]
+              }
+            ],
+            "margin": "lg"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "提醒事項:"
+                  }
+                ],
+                "width": "90px"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "測試",
+                    "wrap": true
+                  }
+                ],
+                "height": "60px"
+              }
+            ],
+            "margin": "lg",
+            "height": "60px"
+          }
+        ],
+        "margin": "lg"
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "postback",
+                  "label": "確認",
+                  "data": "reminder_confirm_ok"
+                },
+                "height": "sm",
+                "style": "primary"
+              }
+            ],
+            "margin": "md"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "postback",
+                  "label": "取消",
+                  "data": "reminder_confirm_cancel"
+                },
+                "height": "sm",
+                "style": "secondary"
+              }
+            ],
+            "margin": "md"
+          }
+        ]
+      }
+    ]
+  }
+}
