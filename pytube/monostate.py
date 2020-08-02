@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
+from typing import Any
+from typing import Optional
 
-from typing import Any, Optional
 from typing_extensions import Protocol
 
 
 class OnProgress(Protocol):
-    def __call__(self, stream: Any, chunk: bytes, bytes_remaining: int) -> None:
+    def __call__(
+        self, stream: Any, chunk: bytes, bytes_remaining: int
+    ) -> None:
         """On download progress callback function.
 
         :param stream:
             An instance of :class:`Stream <Stream>` being downloaded.
         :type stream:
             :py:class:`pytube.Stream`
-        :param str chunk:
+        :param bytes chunk:
             Segment of media file binary data, not yet written to disk.
         :param int bytes_remaining:
             How many bytes have been downloaded.
