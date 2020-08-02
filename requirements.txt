@@ -10,3 +10,5 @@ werkzeug>=0.15.4
 apscheduler~=3.6.3
 argparse~=1.4.0
 pytz~=2020.1
+moviepy>=1.0.3
+pytube3
