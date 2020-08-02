@@ -142,18 +142,11 @@ def handle_text_message(event):
         temp_store_path = os.path.join('static/', event.source.user_id)
 
         if media == 'audio' or media == '-a':
-            downloader.download_audio(output_dir=temp_store_path)
-
-            with ZipFile(temp_store_path+'.zip', mode='w') as audio_zip:
-                for root, folders, files in os.walk(temp_store_path):
-                    for f in files:
-                        file_path = os.path.join(root, f)
-                        audio_zip.write(file_path)
-                audio_zip.close()
+            audio_path = downloader.download_audio(audio_type='mp4a', output_dir=temp_store_path)
 
             line_bot_api.reply_message(
                 event.reply_token,
-                FileMessage(file_name=temp_store_path+'.zip')
+                AudioSendMessage(original_content_url=audio_path)
             )
         elif media == 'video' or media == '-v':
             downloader.download_video(resolution='highest', output_dir=temp_store_path)
@@ -174,12 +167,6 @@ def handle_text_message(event):
                 event.reply_token,
                 TextSendMessage(text='Usage: \n;;dl [audio(-a)|video(-v)] [youtube url]')
             )
-    elif msg == ';;debug':
-        pdf_path = 'static/debug/1 Set.pdf'
-        line_bot_api.reply_message(
-            event.reply_token,
-            FileMessage(file_name=pdf_path)
-        )
     elif msg == ';;bye':
         if isinstance(event.source, SourceGroup):
             line_bot_api.reply_message(
