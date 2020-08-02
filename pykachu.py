@@ -1,5 +1,5 @@
-import os
 from __future__ import unicode_literals
+import os
 
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
