@@ -142,6 +142,7 @@ def handle_text_message(event):
 
         if media == 'audio' or media == '-a':
             audio_path = downloader.download_audio(output_dir=temp_store_path)
+            print(audio_path)
             line_bot_api.reply_message(
                 event.reply_token,
                 FileMessage(file_name=audio_path)
@@ -155,7 +156,7 @@ def handle_text_message(event):
         else:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text='Usage: ;;dl [audio(-a)|video(-v)] [youtube url]')
+                TextSendMessage(text='Usage: \n;;dl [audio(-a)|video(-v)] [youtube url]')
             )
 
     elif msg == ';;bye':

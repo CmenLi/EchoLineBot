@@ -53,7 +53,7 @@ class Downloader:
             result_video.close()
             video.close()
             audio.close()
-            shutil.rmtree(cache_path)
+            # shutil.rmtree(cache_path)
         else:
             os.rename(src=temp_video, dst=video_path)
 
