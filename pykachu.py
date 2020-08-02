@@ -10,6 +10,7 @@ import random
 
 import configparser
 import json
+from zipfile import ZipFile
 
 from yt_downloader import Downloader
 
@@ -141,17 +142,32 @@ def handle_text_message(event):
         temp_store_path = os.path.join('static/', event.source.user_id)
 
         if media == 'audio' or media == '-a':
-            audio_path = downloader.download_audio(output_dir=temp_store_path)
-            print(audio_path)
+            downloader.download_audio(output_dir=temp_store_path)
+
+            with ZipFile(temp_store_path+'.zip', mode='w') as audio_zip:
+                for root, folders, files in os.walk(temp_store_path):
+                    for f in files:
+                        file_path = os.path.join(root, f)
+                        audio_zip.write(file_path)
+                audio_zip.close()
+
             line_bot_api.reply_message(
                 event.reply_token,
-                FileMessage(file_name=audio_path)
+                FileMessage(file_name=temp_store_path+'.zip')
             )
         elif media == 'video' or media == '-v':
-            video_path = downloader.download_video(resolution='highest', output_dir=temp_store_path)
+            downloader.download_video(resolution='highest', output_dir=temp_store_path)
+
+            with ZipFile(temp_store_path+'.zip', mode='w') as audio_zip:
+                for root, folders, files in os.walk(temp_store_path):
+                    for f in files:
+                        file_path = os.path.join(root, f)
+                        audio_zip.write(file_path)
+                audio_zip.close()
+
             line_bot_api.reply_message(
                 event.reply_token,
-                FileMessage(file_name=video_path)
+                FileMessage(file_name=temp_store_path+'.zip')
             )
         else:
             line_bot_api.reply_message(
