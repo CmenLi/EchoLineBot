@@ -174,7 +174,12 @@ def handle_text_message(event):
                 event.reply_token,
                 TextSendMessage(text='Usage: \n;;dl [audio(-a)|video(-v)] [youtube url]')
             )
-
+    elif msg == ';;debug':
+        pdf_path = 'static/debug/1 Set.pdf'
+        line_bot_api.reply_message(
+            event.reply_token,
+            FileMessage(file_name=pdf_path)
+        )
     elif msg == ';;bye':
         if isinstance(event.source, SourceGroup):
             line_bot_api.reply_message(
