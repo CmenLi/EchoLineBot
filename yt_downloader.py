@@ -25,10 +25,11 @@ class Downloader:
         print('\nsuccessfully downloaded {file_type} from {title}'.format(file_type=stream.type, title=stream.title))
 
     def download_video(self, resolution='360p', video_type='mp4', output_dir='./', video_name=None):
+        stream = None
         if resolution == 'highest':
-            resolution = self.yt.streams.get_highest_resolution()
-
-        stream = self.yt.streams.filter(subtype='mp4', resolution=resolution, type='video').first()
+            stream = self.yt.streams.filter(subtype='mp4', adaptive=True, type='video').first()
+        else:
+            stream = self.yt.streams.filter(subtype='mp4', resolution=resolution, type='video').first()
 
         if video_name is None:
             video_name = stream.default_filename
@@ -37,8 +38,10 @@ class Downloader:
 
         video_path = os.path.join(output_dir, video_name)
         cache_path = os.path.join(output_dir, 'cache/')
+
         if not os.path.exists(cache_path):
             os.makedirs(cache_path)
+
         temp_video = stream.download(output_path=cache_path, filename='temp_video.mp4')
 
         if stream.is_adaptive:
@@ -53,10 +56,10 @@ class Downloader:
             result_video.close()
             video.close()
             audio.close()
-            shutil.rmtree(cache_path)
         else:
             os.rename(src=temp_video, dst=video_path)
 
+        shutil.rmtree(cache_path)
         return video_path
 
     def download_audio(self, audio_type='mp3', output_dir='./', audio_name=None):
@@ -68,16 +71,18 @@ class Downloader:
 
         temp_video_path = stream.download(output_path=cache_path)
 
-        audio = editor.AudioFileClip(temp_video_path)
-
         if audio_name is None:
             audio_name = stream.default_filename.replace('mp4', audio_type)
         else:
             audio_name = '{name}.{type}'.format(name=audio_name, type=audio_type)
 
-        print('audio: ' + audio_name)
-
         audio_path = os.path.join(output_dir, audio_name)
+        if audio_type == 'm4a':
+            # do not use ffmpeg codec 'libfdk_aac'
+            os.rename(temp_video_path, audio_path)
+            return audio_path
+
+        audio = editor.AudioFileClip(temp_video_path)
         audio.write_audiofile(audio_path)
         audio.close()
         # clean cache
