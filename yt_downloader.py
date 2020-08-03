@@ -43,24 +43,25 @@ class Downloader:
             os.makedirs(cache_path)
 
         temp_video = stream.download(output_path=cache_path, filename='temp_video.mp4')
+        video = editor.VideoFileClip(temp_video)
+        duration = video.duration
 
         if stream.is_adaptive:
             temp_audio = self.yt.streams.filter(subtype='mp4', type='audio').first().download(output_path=cache_path)
 
             print('Now writing the audio into video... ')
-            video = editor.VideoFileClip(temp_video)
             audio = editor.AudioFileClip(temp_audio)
             result_video = video.set_audio(audio)
             result_video.write_videofile(video_path)
 
             result_video.close()
-            video.close()
             audio.close()
         else:
             os.rename(src=temp_video, dst=video_path)
 
+        video.close()
         shutil.rmtree(cache_path)
-        return video_path
+        return video_path, duration
 
     def download_audio(self, audio_type='mp3', output_dir='./', audio_name=None):
         stream = self.yt.streams.filter(subtype='mp4', type='audio').first()
@@ -76,16 +77,19 @@ class Downloader:
         else:
             audio_name = '{name}.{type}'.format(name=audio_name, type=audio_type)
 
-        audio_path = os.path.join(output_dir, audio_name)
-        if audio_type == 'm4a':
-            # do not use ffmpeg codec 'libfdk_aac'
-            os.rename(temp_video_path, audio_path)
-            return audio_path
-
         audio = editor.AudioFileClip(temp_video_path)
+        duration = audio.duration
+
+        audio_path = os.path.join(output_dir, audio_name)
+        # do not use ffmpeg codec 'libfdk_aac'
+        if audio_type == 'm4a':
+            audio.close()
+            os.rename(temp_video_path, audio_path)
+            return audio_path, duration
+
         audio.write_audiofile(audio_path)
         audio.close()
         # clean cache
         shutil.rmtree(cache_path, ignore_errors=True)
 
-        return audio_path
+        return audio_path, duration
