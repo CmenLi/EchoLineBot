@@ -155,7 +155,7 @@ def handle_text_message(event):
 
         if media == 'audio' or media == '-a':
             file_id = len(database.read_user_data(database.MEDIA_DOWNLOAD_FLAG, user_id).get('audio', []))
-            file_name = f'audio_{file_id: 02}'
+            file_name = f'audio_{file_id:02}'
             audio_path, duration = downloader.download_audio(
                                         audio_type='m4a',
                                         output_dir=temp_store_path,
@@ -193,7 +193,7 @@ def handle_text_message(event):
             os.remove(audio_path)
         elif media == 'video' or media == '-v':
             file_id = len(database.read_user_data(database.MEDIA_DOWNLOAD_FLAG, user_id).get('video', []))
-            file_name = f'video_{file_id: 02}'
+            file_name = f'video_{file_id:02}'
             video_path, duration = downloader.download_video(
                 resolution='highest',
                 output_dir=temp_store_path,
