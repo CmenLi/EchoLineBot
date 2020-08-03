@@ -10,7 +10,6 @@ import random
 
 import configparser
 import json
-from zipfile import ZipFile
 
 from yt_downloader import Downloader
 
@@ -24,6 +23,8 @@ handler = WebhookHandler(config.get('line-bot', 'channel_secret'))
 
 # variables
 # const:
+DOMAIN = 'https://pykachu-linebot.herokuapp.com/'
+
 ADMIN_ID = 'U940d15d3a94c5e90dde5e52dd373d0be'
 
 HACKMD_URL = 'https://hackmd.io/@KoiSharp/H1l7A7kRI'
@@ -142,25 +143,18 @@ def handle_text_message(event):
         temp_store_path = os.path.join('static/', event.source.user_id)
 
         if media == 'audio' or media == '-a':
-            audio_path = downloader.download_audio(audio_type='mp4a', output_dir=temp_store_path)
-
+            audio_path = downloader.download_audio(audio_type='m4a', output_dir=temp_store_path)
+            print(f'{DOMAIN}{audio_path}')
             line_bot_api.reply_message(
                 event.reply_token,
-                AudioSendMessage(original_content_url=audio_path)
+                AudioSendMessage(original_content_url=f'{DOMAIN}{audio_path}')
             )
         elif media == 'video' or media == '-v':
-            downloader.download_video(resolution='highest', output_dir=temp_store_path)
-
-            with ZipFile(temp_store_path+'.zip', mode='w') as audio_zip:
-                for root, folders, files in os.walk(temp_store_path):
-                    for f in files:
-                        file_path = os.path.join(root, f)
-                        audio_zip.write(file_path)
-                audio_zip.close()
+            video_path = downloader.download_video(resolution='highest', output_dir=temp_store_path)
 
             line_bot_api.reply_message(
                 event.reply_token,
-                FileMessage(file_name=temp_store_path+'.zip')
+                VideoSendMessage(original_content_url=f'{DOMAIN}{video_path}')
             )
         else:
             line_bot_api.reply_message(
