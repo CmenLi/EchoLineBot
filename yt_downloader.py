@@ -2,7 +2,7 @@ import os
 
 from pytube import YouTube, Stream
 import shutil
-import moviepy.editor as editor
+from moviepy.editor import VideoFileClip, AudioFileClip
 
 
 class Downloader:
@@ -25,7 +25,6 @@ class Downloader:
         print('\nsuccessfully downloaded {file_type} from {title}'.format(file_type=stream.type, title=stream.title))
 
     def download_video(self, resolution='360p', video_type='mp4', output_dir='./', video_name=None):
-        stream = None
         if resolution == 'highest':
             stream = self.yt.streams.filter(subtype='mp4', adaptive=True, type='video').first()
         else:
@@ -37,20 +36,23 @@ class Downloader:
             video_name = '{name}.{type}'.format(name=video_name, type=video_type)
 
         video_path = os.path.join(output_dir, video_name)
+        if os.path.exists(video_path):
+            return video_path, VideoFileClip(video_path).duration
+
         cache_path = os.path.join(output_dir, 'cache/')
 
         if not os.path.exists(cache_path):
             os.makedirs(cache_path)
 
         temp_video = stream.download(output_path=cache_path, filename='temp_video.mp4')
-        video = editor.VideoFileClip(temp_video)
+        video = VideoFileClip(temp_video)
         duration = video.duration
 
         if stream.is_adaptive:
             temp_audio = self.yt.streams.filter(subtype='mp4', type='audio').first().download(output_path=cache_path)
 
             print('Now writing the audio into video... ')
-            audio = editor.AudioFileClip(temp_audio)
+            audio = AudioFileClip(temp_audio)
             result_video = video.set_audio(audio)
             result_video.write_videofile(video_path)
 
@@ -66,21 +68,24 @@ class Downloader:
     def download_audio(self, audio_type='mp3', output_dir='./', audio_name=None):
         stream = self.yt.streams.filter(subtype='mp4', type='audio').first()
 
+        if audio_name is None:
+            audio_name = stream.default_filename.replace('mp4', audio_type)
+        else:
+            audio_name = '{name}.{type}'.format(name=audio_name, type=audio_type)
+
+        audio_path = os.path.join(output_dir, audio_name)
+        if os.path.exists(audio_path):
+            return audio_path, AudioFileClip(audio_path).duration
+
         cache_path = os.path.join(output_dir, 'cache/')
         if not os.path.exists(cache_path):
             os.makedirs(cache_path)
 
         temp_video_path = stream.download(output_path=cache_path)
 
-        if audio_name is None:
-            audio_name = stream.default_filename.replace('mp4', audio_type)
-        else:
-            audio_name = '{name}.{type}'.format(name=audio_name, type=audio_type)
-
-        audio = editor.AudioFileClip(temp_video_path)
+        audio = AudioFileClip(temp_video_path)
         duration = audio.duration
 
-        audio_path = os.path.join(output_dir, audio_name)
         # do not use ffmpeg codec 'libfdk_aac'
         if audio_type == 'm4a':
             audio.close()
