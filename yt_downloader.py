@@ -1,7 +1,7 @@
 import os
+import shutil
 
 from pytube import YouTube, Stream
-import shutil
 from moviepy.editor import VideoFileClip, AudioFileClip
 
 
@@ -62,6 +62,7 @@ class Downloader:
             os.rename(src=temp_video, dst=video_path)
 
         video.close()
+
         shutil.rmtree(cache_path)
         return video_path, duration
 

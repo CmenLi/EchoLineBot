@@ -9,7 +9,7 @@ from linebot.models import *
 import math
 import random
 
-import urllib.parse
+import urllib.parse as urlparser
 import configparser
 import json
 
@@ -138,10 +138,11 @@ def handle_text_message(event):
         if len(tokens) < 3:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text='Usage: ;;dl [audio(-a)|video(-v)] [youtube url]')
+                TextSendMessage(text='Usage: \n;;dl [audio(-a)|video(-v)] [youtube url]')
             )
         media = tokens[1]
         yt_url = tokens[2]
+
         downloader = Downloader(yt_url)
         temp_store_path = os.path.join('static/', event.source.user_id)
 
@@ -152,7 +153,7 @@ def handle_text_message(event):
 
         if media == 'audio' or media == '-a':
             audio_path, duration = downloader.download_audio(audio_type='m4a', output_dir=temp_store_path)
-            getting_url = urllib.parse.quote(f'{DOMAIN}/{audio_path}')
+            getting_url = urlparser.quote(f'{DOMAIN}/{audio_path}')
             getting_url = HTTPS_HEAD + getting_url
 
             if isinstance(event.source, SourceGroup):
@@ -160,7 +161,7 @@ def handle_text_message(event):
                     event.source.group_id,
                     [
                         TextSendMessage(text=getting_url),
-                        AudioSendMessage(original_content_url=getting_url, duration=math.ceil(duration))
+                        AudioSendMessage(original_content_url=getting_url, duration=math.ceil(duration*1000))
                     ]
                 )
             elif isinstance(event.source, SourceRoom):
@@ -168,7 +169,7 @@ def handle_text_message(event):
                     event.source.room_id,
                     [
                         TextSendMessage(text=getting_url),
-                        AudioSendMessage(original_content_url=getting_url, duration=math.ceil(duration))
+                        AudioSendMessage(original_content_url=getting_url, duration=math.ceil(duration*1000))
                     ]
                 )
             else:
@@ -176,20 +177,25 @@ def handle_text_message(event):
                     user_id,
                     [
                         TextSendMessage(text=getting_url),
-                        AudioSendMessage(original_content_url=getting_url, duration=math.ceil(duration))
+                        AudioSendMessage(original_content_url=getting_url, duration=math.ceil(duration*1000))
                     ]
                 )
         elif media == 'video' or media == '-v':
             video_path, duration = downloader.download_video(resolution='highest', output_dir=temp_store_path)
-            getting_url = urllib.parse.quote(f'{DOMAIN}/{video_path}')
+            getting_url = urlparser.quote(f'{DOMAIN}/{video_path}')
             getting_url = HTTPS_HEAD + getting_url
+            print(getting_url)
 
             if isinstance(event.source, SourceGroup):
                 line_bot_api.push_message(
                     event.source.group_id,
                     [
                         TextSendMessage(text=getting_url),
-                        VideoSendMessage(original_content_url=getting_url, duration=math.ceil(duration))
+                        VideoSendMessage(
+                            original_content_url=getting_url,
+                            preview_image_url=downloader.yt.thumbnail_url,
+                            duration=math.ceil(duration*1000)
+                        )
                     ]
                 )
             elif isinstance(event.source, SourceRoom):
@@ -197,7 +203,11 @@ def handle_text_message(event):
                     event.source.room_id,
                     [
                         TextSendMessage(text=getting_url),
-                        VideoSendMessage(original_content_url=getting_url, duration=math.ceil(duration))
+                        VideoSendMessage(
+                            original_content_url=getting_url,
+                            preview_image_url=downloader.yt.thumbnail_url,
+                            duration=math.ceil(duration * 1000)
+                        )
                     ]
                 )
             else:
@@ -205,7 +215,11 @@ def handle_text_message(event):
                     user_id,
                     [
                         TextSendMessage(text=getting_url),
-                        VideoSendMessage(original_content_url=getting_url, duration=math.ceil(duration))
+                        VideoSendMessage(
+                            original_content_url=getting_url,
+                            preview_image_url=downloader.yt.thumbnail_url,
+                            duration=math.ceil(duration * 1000)
+                        )
                     ]
                 )
         else:
