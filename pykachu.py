@@ -144,17 +144,20 @@ def handle_text_message(event):
         temp_store_path = os.path.join('static/', event.source.user_id)
 
         if media == 'audio' or media == '-a':
-            audio_path = downloader.download_audio(audio_type='m4a', output_dir=temp_store_path)
+            audio_path = downloader.download_audio(audio_type='m4a', output_dir=temp_store_path, audio_name='line')
+            getting_url = urllib.parse.quote(f'{DOMAIN}{audio_path}')
+            print(getting_url)
             line_bot_api.reply_message(
                 event.reply_token,
-                AudioSendMessage(original_content_url=urllib.parse.quote(f'{DOMAIN}{audio_path}'))
+                AudioSendMessage(original_content_url=getting_url)
             )
         elif media == 'video' or media == '-v':
-            video_path = downloader.download_video(resolution='highest', output_dir=temp_store_path)
-
+            video_path = downloader.download_video(resolution='highest', output_dir=temp_store_path, video_name='line')
+            getting_url = urllib.parse.quote(f'{DOMAIN}{video_path}')
+            print(getting_url)
             line_bot_api.reply_message(
                 event.reply_token,
-                VideoSendMessage(original_content_url=urllib.parse.quote(f'{DOMAIN}{video_path}'))
+                VideoSendMessage(original_content_url=getting_url)
             )
         else:
             line_bot_api.reply_message(
