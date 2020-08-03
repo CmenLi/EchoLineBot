@@ -24,7 +24,8 @@ handler = WebhookHandler(config.get('line-bot', 'channel_secret'))
 
 # variables
 # const:
-DOMAIN = 'https://pykachu-linebot.herokuapp.com/'
+HTTPS_HEAD = 'https://'
+DOMAIN = 'pykachu-linebot.herokuapp.com'
 
 ADMIN_ID = 'U940d15d3a94c5e90dde5e52dd373d0be'
 
@@ -145,7 +146,7 @@ def handle_text_message(event):
 
         if media == 'audio' or media == '-a':
             audio_path = downloader.download_audio(audio_type='m4a', output_dir=temp_store_path, audio_name='line')
-            getting_url = urllib.parse.quote(f'{DOMAIN}{audio_path}')
+            getting_url = urllib.parse.quote(f'{DOMAIN}/{audio_path}')
             print(getting_url)
             line_bot_api.reply_message(
                 event.reply_token,
@@ -153,7 +154,7 @@ def handle_text_message(event):
             )
         elif media == 'video' or media == '-v':
             video_path = downloader.download_video(resolution='highest', output_dir=temp_store_path, video_name='line')
-            getting_url = urllib.parse.quote(f'{DOMAIN}{video_path}')
+            getting_url = urllib.parse.quote(f'{DOMAIN}/{video_path}')
             print(getting_url)
             line_bot_api.reply_message(
                 event.reply_token,
