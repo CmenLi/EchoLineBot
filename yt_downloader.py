@@ -54,8 +54,8 @@ class Downloader:
             print('Now writing the audio into video... ')
             audio = AudioFileClip(temp_audio)
             result_video = video.set_audio(audio)
+            audio.reader.close_proc()
             video.reader.close()
-            video.close()
             result_video.write_videofile(video_path)
             result_video.close()
         else:
