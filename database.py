@@ -11,6 +11,16 @@ MEDIA_DOWNLOAD_FLAG = 1
 media_download_log_file = 'static/media_download_log.json'
 
 
+def read_data(flag: int):
+    data = json.load(
+        {
+            1: open(media_download_log_file, mode='r', encoding='utf-8', errors='ignore')
+        }[flag]
+    )
+
+    return data
+
+
 def read_user_data(flag: int, user: str):
     data = json.load(
         {
@@ -22,12 +32,9 @@ def read_user_data(flag: int, user: str):
 
 
 def log_media(user: str, media_type: str, name: str, url: str, duration: float, date: datetime):
-    data: dict = read_user_data(1, user)
-    media_id = 0
-    if user in data:
-        media_id = len(data["user"].get(media_type, []))
-    else:
-        data[user] = {"video": [], "audio": []}
+    data: dict = read_data(1)
+    user_data = data.get(user, {})
+    media_id = len(user_data.get(media_type, []))
 
     media_info = {
         "id": media_id,
@@ -37,9 +44,10 @@ def log_media(user: str, media_type: str, name: str, url: str, duration: float, 
         "date": date.strftime('%Y/%m/%d')
     }
 
-    media_list = data[user].get(media_type, [])
+    media_list = user_data.get(media_type, [])
     media_list.add(media_info)
-    data[user][media_type] = media_list
+    user_data[media_type] = media_list
+    data[user] = user_data
 
     print(data)
 
