@@ -56,8 +56,6 @@ class Downloader:
             result_video = video.set_audio(audio)
             video.reader.close()
             video.close()
-            audio.reader.close_proc()
-            audio.close()
             result_video.write_videofile(video_path)
             result_video.close()
         else:
