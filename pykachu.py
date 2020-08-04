@@ -155,6 +155,7 @@ def handle_text_message(event):
 
         if media == 'audio' or media == '-a':
             file_id = len(database.read_user_data(database.MEDIA_DOWNLOAD_FLAG, user_id).get('audio', []))
+            print(file_id)
             file_name = f'audio_{file_id:02}'
             audio_path, duration = downloader.download_audio(
                                         audio_type='m4a',
@@ -190,7 +191,6 @@ def handle_text_message(event):
                     ]
                 )
             database.log_media(user_id, 'audio', file_name, yt_url, duration, datetime.today())
-            os.remove(audio_path)
         elif media == 'video' or media == '-v':
             file_id = len(database.read_user_data(database.MEDIA_DOWNLOAD_FLAG, user_id).get('video', []))
             file_name = f'video_{file_id:02}'
@@ -220,7 +220,6 @@ def handle_text_message(event):
                     TextSendMessage(text=getting_url)
                 )
             database.log_media(user_id, 'video', file_name, yt_url, duration, datetime.today())
-            os.remove(video_path)
         else:
             line_bot_api.reply_message(
                 event.reply_token,

@@ -41,6 +41,8 @@ def log_media(user: str, media_type: str, name: str, url: str, duration: float, 
     media_list.add(media_info)
     data[user][media_type] = media_list
 
+    print(data)
+
     with open(media_download_log_file) as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
         f.close()
