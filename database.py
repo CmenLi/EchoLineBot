@@ -22,7 +22,7 @@ def read_user_data(flag: int, user: str):
 
 
 def log_media(user: str, media_type: str, name: str, url: str, duration: float, date: datetime):
-    data: dict = read_user_data()
+    data: dict = read_user_data(1, user)
     media_id = 0
     if user in data:
         media_id = len(data["user"].get(media_type, []))
