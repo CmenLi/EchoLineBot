@@ -45,7 +45,7 @@ def log_media(user: str, media_type: str, name: str, url: str, duration: float, 
     }
 
     media_list = user_data.get(media_type, [])
-    media_list.add(media_info)
+    media_list.append(media_info)
     user_data[media_type] = media_list
     data[user] = user_data
 
